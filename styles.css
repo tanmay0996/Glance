@@ -162,10 +162,11 @@ h1, h2, h3 { letter-spacing: -0.02em; text-wrap: balance; }
 }
 .g-card .g-photo-empty { display: grid; place-items: center; color: var(--muted); font-size: 0.75rem; text-align: center; }
 .g-card .g-name { font-size: 1.05rem; }
-.g-meta { margin: 6px 0 0; padding: 0; list-style: none; font-size: 0.875rem; color: var(--ink-2); }
-.g-meta li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-meta { margin: 6px 0 0 !important; padding: 0 !important; list-style: none; font-size: 0.875rem; color: var(--ink-2); }
+.g-meta li { margin: 0 !important; padding: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-card { min-height: 128px; }
 .g-meta .g-k { color: var(--muted); }
-.g-card .g-today { margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+.g-card .g-today { margin-top: 6px; min-height: 44px; display: flex; align-items: center; font-size: 0.85rem; color: var(--muted); }
 
 /* ---------- Slip grid (records) ---------- */
 

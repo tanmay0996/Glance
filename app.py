@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3
 import pandas as pd
 import altair as alt
-from PIL import Image
+from PIL import Image, ImageOps
 from pathlib import Path
 from datetime import date, datetime, timedelta
 from html import escape
@@ -554,6 +554,11 @@ def photo_mtime(photo_path):
     return path.stat().st_mtime if path.exists() else 0
 
 
+def text_or(value, default):
+    """SQLite NULLs arrive as NaN; treat them and blanks as missing."""
+    return value if isinstance(value, str) and value.strip() else default
+
+
 def initials(name):
     parts = [part for part in str(name).split() if part]
     return "".join(part[0] for part in parts[:2]).upper() or "?"
@@ -694,7 +699,7 @@ def chart_config(chart):
 def save_photo(uploaded_file):
     """Validate an uploaded photo and save it. Returns (path, error)."""
 
-    image = Image.open(uploaded_file).convert("RGB")
+    image = ImageOps.exif_transpose(Image.open(uploaded_file)).convert("RGB")
 
     if image.width < 100 or image.height < 100:
         return None, (
@@ -1003,11 +1008,17 @@ def page_students():
     roster, today = today_roster()
     times = dict(zip(roster["student_id"], roster["attendance_time"]))
 
-    columns = st.columns(3, gap="medium")
+    records = list(filtered.iterrows())
 
-    for position, (_, student) in enumerate(filtered.iterrows()):
-        with columns[position % 3]:
-            student_card(student, today, times.get(student["student_id"]))
+    # Lay cards out row by row so each row shares one baseline.
+    for start in range(0, len(records), 3):
+        row = st.columns(3, gap="medium")
+
+        for column, (_, student) in zip(row, records[start:start + 3]):
+            with column:
+                student_card(
+                    student, today, times.get(student["student_id"])
+                )
 
 
 def student_card(student, today, time_today):
@@ -1033,8 +1044,8 @@ def student_card(student, today, time_today):
             f'<div class="g-name">{escape(student["name"])}</div>'
             f'<div class="g-id">{escape(student_id)}</div>'
             f'<ul class="g-meta">'
-            f'<li>{escape(student["department"] or "No department")}</li>'
-            f'<li>{escape(student["email"] or "No email")}</li>'
+            f'<li>{escape(text_or(student["department"], "No department"))}</li>'
+            f'<li>{escape(text_or(student["email"], "No email"))}</li>'
             f'</ul>'
             f'<div class="g-today">{status}</div>'
             f'</div></div>'
@@ -1084,10 +1095,10 @@ def edit_form(student):
     with st.form(f"edit_form_{student_id}", border=False):
         edited_name = st.text_input("Full name", value=student["name"])
         edited_department = st.text_input(
-            "Department", value=student["department"] or ""
+            "Department", value=text_or(student["department"], "")
         )
         edited_email = st.text_input(
-            "Email", value=student["email"] or ""
+            "Email", value=text_or(student["email"], "")
         )
         edited_photo = st.file_uploader(
             "Replace photo (optional)",
@@ -1160,7 +1171,7 @@ def page_add():
     form_col, tips_col = st.columns([3, 2], gap="large")
 
     with form_col:
-        with st.form("student_registration", clear_on_submit=True):
+        with st.form(f"student_registration_{st.session_state.get('add_form_version', 0)}"):
             id_col, name_col = st.columns(2)
 
             with id_col:
@@ -1241,6 +1252,10 @@ def page_add():
             )
             return
 
+        # A new form key clears the fields, but only after a successful add.
+        st.session_state["add_form_version"] = (
+            st.session_state.get("add_form_version", 0) + 1
+        )
         st.toast(f"Added {name}", icon=":material/person_add:")
         st.success(
             f"Added {name} ({student_id}). They can be stamped present "
@@ -1293,6 +1308,10 @@ def page_records():
             icon=":material/search:"
         ).strip().lower()
 
+    if not picked:
+        st.info("Pick a date range to see records.", icon=":material/event:")
+        return
+
     if isinstance(picked, (tuple, list)) and len(picked) == 2:
         start_day, end_day = picked
     else:
@@ -1339,6 +1358,7 @@ def page_records():
         "attendance_time": "time",
         "student_id": "student id"
     })
+    log_view = export.assign(date=pd.to_datetime(export["date"]))
 
     with download_col:
         st.download_button(
@@ -1351,7 +1371,7 @@ def page_records():
         )
 
     st.dataframe(
-        export,
+        log_view,
         hide_index=True,
         width="stretch",
         column_config={
