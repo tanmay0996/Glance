@@ -1,0 +1,33 @@
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#6E2B8F"
+backgroundColor = "#F4F6F8"
+secondaryBackgroundColor = "#E9EDF1"
+textColor = "#15191F"
+linkColor = "#6E2B8F"
+borderColor = "#D5DBE1"
+dataframeBorderColor = "#D5DBE1"
+dataframeHeaderBackgroundColor = "#EEF1F4"
+showWidgetBorder = true
+font = "Schibsted Grotesk:https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap, sans-serif"
+headingFont = "Schibsted Grotesk:https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap, sans-serif"
+codeFont = "Courier Prime:https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap, monospace"
+baseFontSize = 15
+headingFontWeights = [700, 600, 600, 600, 600, 600]
+headingFontSizes = ["2rem", "1.5rem", "1.125rem", "1rem", "0.9375rem", "0.875rem"]
+baseRadius = "8px"
+buttonRadius = "8px"
+chartCategoricalColors = ["#6E2B8F", "#687387"]
+redColor = "#B42318"
+greenColor = "#2F7D4F"
+violetColor = "#6E2B8F"
+grayColor = "#687387"
+
+[theme.sidebar]
+backgroundColor = "#EEF1F4"
