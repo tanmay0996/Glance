@@ -8,7 +8,7 @@
   --line-soft: #E3E8ED;
   --ink: #15191F;
   --ink-2: #3D4552;
-  --muted: #687387;
+  --muted: #5F6A7D;
   --stamp: #6E2B8F;
   --stamp-soft: #F3ECF7;
   --stamp-line: #D9C4E6;
@@ -20,17 +20,17 @@
 
 /* ---------- Browser surfaces ---------- */
 
-::selection { background: var(--stamp); color: #FFFFFF; }
-html { caret-color: var(--stamp); }
+::selection { background: var(--ink); color: #FFFFFF; }
+html { caret-color: var(--ink); }
 * { scrollbar-color: #B9C1CB transparent; scrollbar-width: thin; }
-:focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 a { text-underline-offset: 3px; }
 
 /* ---------- App frame ---------- */
 
 [data-testid="stMainBlockContainer"] {
   max-width: 1180px;
-  padding-top: 4.5rem;
+  padding-top: 5.5rem;
   padding-bottom: 4rem;
 }
 
@@ -135,9 +135,6 @@ h1, h2, h3 { letter-spacing: -0.02em; text-wrap: balance; }
 }
 .g-stamp .k { font-size: 0.72rem; letter-spacing: 0.14em; }
 .g-stamp .v { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.04em; }
-.g-stamp.lg { padding: 8px 18px 6px; border-width: 2px; outline-width: 1.5px; outline-offset: 3px; }
-.g-stamp.lg .k { font-size: 1.15rem; letter-spacing: 0.18em; }
-.g-stamp.lg .v { font-size: 0.85rem; }
 
 .g-row.fresh .g-stamp { animation: g-press 180ms var(--ease-out) both; }
 @keyframes g-press {
@@ -166,7 +163,7 @@ h1, h2, h3 { letter-spacing: -0.02em; text-wrap: balance; }
 .g-meta li { margin: 0 !important; padding: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .g-card { min-height: 128px; }
 .g-meta .g-k { color: var(--muted); }
-.g-card .g-today { margin-top: 6px; min-height: 44px; display: flex; align-items: center; font-size: 0.85rem; color: var(--muted); }
+.g-card .g-today { margin-top: 6px; height: 48px; display: flex; align-items: center; font-size: 0.85rem; color: var(--muted); }
 
 /* ---------- Slip grid (records) ---------- */
 
@@ -194,7 +191,7 @@ h1, h2, h3 { letter-spacing: -0.02em; text-wrap: balance; }
 .g-legend span { display: inline-flex; gap: 8px; align-items: center; }
 
 @media (max-width: 640px) {
-  [data-testid="stMainBlockContainer"] { padding-top: 4rem; }
+  [data-testid="stMainBlockContainer"] { padding-top: 5rem; }
   .g-head { flex-direction: column; align-items: flex-start; gap: 4px; }
   .g-head h1 { font-size: 1.6rem; }
   .g-row { padding: 10px 12px; }

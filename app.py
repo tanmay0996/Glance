@@ -518,7 +518,7 @@ class FaceAttendanceProcessor:
 # --- Interface Helpers ---
 
 STAMP_HEX = "#6E2B8F"
-MUTED_HEX = "#687387"
+MUTED_HEX = "#5F6A7D"
 LINE_HEX = "#D5DBE1"
 INK_HEX = "#15191F"
 
@@ -559,6 +559,10 @@ def text_or(value, default):
     return value if isinstance(value, str) and value.strip() else default
 
 
+def plural(count, noun):
+    return f"{count} {noun}{'' if count == 1 else 's'}"
+
+
 def initials(name):
     parts = [part for part in str(name).split() if part]
     return "".join(part[0] for part in parts[:2]).upper() or "?"
@@ -578,13 +582,12 @@ def avatar_html(student):
 
 
 # The date stamp: Glance's single mark for "present".
-def stamp_html(day, time_text=None, large=False):
+def stamp_html(day, time_text=None):
     when = datetime.strptime(day, "%Y-%m-%d").strftime("%d %b").upper()
     detail = f"{when} · {time_text[:5]}" if time_text else when
-    size = " lg" if large else ""
 
     return (
-        f'<span class="g-stamp{size}" role="img" '
+        f'<span class="g-stamp" role="img" '
         f'aria-label="Present, {escape(detail)}">'
         f'<span class="k">Present</span>'
         f'<span class="v">{escape(detail)}</span>'
@@ -670,7 +673,6 @@ def missing_rows_html(missing):
             f'{avatar_html(student)}'
             f'<div class="g-who"><div class="g-name">{escape(student["name"])}</div>'
             f'<div class="g-id">{escape(student["student_id"])}</div></div>'
-            f'<span class="g-wait">Not yet marked</span>'
             f'</div>'
         )
 
@@ -860,9 +862,9 @@ def page_live():
     with camera_col:
         student_embeddings = build_student_embeddings(student_records)
 
-        if not student_embeddings:
+        if not student_embeddings and students.empty:
             with st.container(border=True):
-                st.markdown("**No faces to match against yet.**")
+                st.markdown("**No students to match against yet.**")
                 st.write(
                     "Add students with a clear, front-facing photo, "
                     "then come back here."
@@ -871,6 +873,20 @@ def page_live():
                     PAGE_ADD,
                     label="Add student",
                     icon=":material/person_add:"
+                )
+
+        elif not student_embeddings:
+            with st.container(border=True):
+                st.markdown("**No usable face photos.**")
+                st.write(
+                    f"None of the {plural(len(students), 'registered photo')} "
+                    "has a detectable face. Replace them with clear, "
+                    "front-facing photos."
+                )
+                st.page_link(
+                    PAGE_STUDENTS,
+                    label="Open Students",
+                    icon=":material/badge:"
                 )
 
         else:
@@ -898,7 +914,8 @@ def page_live():
             skipped = len(students) - len(student_embeddings)
             if skipped:
                 st.caption(
-                    f"{skipped} student photo(s) have no detectable face "
+                    f"{plural(skipped, 'student photo')} "
+                    f"{'has' if skipped == 1 else 'have'} no detectable face "
                     "and can't be matched. Replace them from Students."
                 )
 
@@ -1340,7 +1357,7 @@ def page_records():
 
     section_label(
         "Attendance slip",
-        f"{len(class_days)} class day(s) · {len(students)} student(s)"
+        f"{plural(len(class_days), 'class day')} · {plural(len(students), 'student')}"
     )
     st.html(slip_grid_html(students, in_range, class_days))
 
@@ -1349,7 +1366,7 @@ def page_records():
     log_col, download_col = st.columns([4, 1], vertical_alignment="bottom")
 
     with log_col:
-        section_label("Log", f"{len(in_range)} stamp(s)")
+        section_label("Log", plural(len(in_range), "stamp"))
 
     export = in_range[
         ["attendance_date", "attendance_time", "student_id", "name", "status"]
@@ -1358,7 +1375,7 @@ def page_records():
         "attendance_time": "time",
         "student_id": "student id"
     })
-    log_view = export.assign(date=pd.to_datetime(export["date"]))
+    log_view = export.drop(columns=["status"]).assign(date=pd.to_datetime(export["date"]))
 
     with download_col:
         st.download_button(
@@ -1378,8 +1395,7 @@ def page_records():
             "date": st.column_config.DateColumn("Date", format="ddd DD MMM YYYY"),
             "time": "Time",
             "student id": "Student ID",
-            "name": "Name",
-            "status": "Status"
+            "name": "Name"
         }
     )
 

@@ -6,11 +6,11 @@ gatherUsageStats = false
 
 [theme]
 base = "light"
-primaryColor = "#6E2B8F"
+primaryColor = "#15191F"
 backgroundColor = "#F4F6F8"
 secondaryBackgroundColor = "#E9EDF1"
 textColor = "#15191F"
-linkColor = "#6E2B8F"
+linkColor = "#15191F"
 borderColor = "#D5DBE1"
 dataframeBorderColor = "#D5DBE1"
 dataframeHeaderBackgroundColor = "#EEF1F4"
@@ -23,11 +23,11 @@ headingFontWeights = [700, 600, 600, 600, 600, 600]
 headingFontSizes = ["2rem", "1.5rem", "1.125rem", "1rem", "0.9375rem", "0.875rem"]
 baseRadius = "8px"
 buttonRadius = "8px"
-chartCategoricalColors = ["#6E2B8F", "#687387"]
+chartCategoricalColors = ["#6E2B8F", "#5F6A7D"]
 redColor = "#B42318"
 greenColor = "#2F7D4F"
 violetColor = "#6E2B8F"
-grayColor = "#687387"
+grayColor = "#5F6A7D"
 
 [theme.sidebar]
 backgroundColor = "#EEF1F4"

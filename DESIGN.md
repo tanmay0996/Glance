@@ -11,7 +11,7 @@ colors:
   miss-dash: "#B9C1CB"
   ink: "#15191F"
   ink-2: "#3D4552"
-  muted: "#687387"
+  muted: "#5F6A7D"
   stamp: "#6E2B8F"
   stamp-soft: "#F3ECF7"
   stamp-line: "#D9C4E6"
@@ -76,7 +76,7 @@ Cool slate neutrals carry everything; plum ink is the only chroma in normal use.
 
 ### Named Rules
 **The One Ink Rule.** `#6E2B8F` means "present" and nothing else. Anything not about a student being marked present uses ink, ink-2, muted or line.
-Known drift, not a rule: `primaryColor = "#6E2B8F"` in `config.toml` also inks primary buttons, links, text selection, caret and the focus outline, and the logo mark is drawn in stamp ink. These break the One Ink Rule and are not to be copied.
+Interactive chrome (primary buttons, links, text selection, caret, focus outline) uses catalog ink #15191F, so stamp ink stays reserved for "present". The one exception is the logo mark, which is itself a stamp.
 **The Quiet Absence Rule.** Not-yet-marked is slate text and a grey dash, never red. Red is reserved for recognition failure and errors.
 
 ## Typography
@@ -109,7 +109,7 @@ Cards and lists 12px; rows, buttons, avatars and photos 8px; stamp 4px; slip mar
 ## Components
 
 ### Stamp (signature)
-`stamp_html(day, time)`: inline column, "PRESENT" (Courier Prime 700, 0.72rem, 0.14em) over "12 OCT · 09:14" (400, 0.7rem, 0.04em), uppercase, stamp ink at 0.92 opacity, rotated −3°, `role="img"` with an aria-label. Large variant `.lg` (padding 8px 18px 6px, 2px border, 1.15rem key) is defined but not yet rendered. On a fresh row it lands with `g-press`: 180ms `cubic-bezier(0.23, 1, 0.32, 1)`, scale 1.08→1, opacity 0→0.92; reduced motion swaps to a 120ms opacity fade.
+`stamp_html(day, time)`: inline column, "PRESENT" (Courier Prime 700, 0.72rem, 0.14em) over "12 OCT · 09:14" (400, 0.7rem, 0.04em), uppercase, stamp ink at 0.92 opacity, rotated −3°, `role="img"` with an aria-label. On a fresh row it lands with `g-press`: 180ms `cubic-bezier(0.23, 1, 0.32, 1)`, scale 1.08→1, opacity 0→0.92; reduced motion swaps to a 120ms opacity fade.
 
 ### Catalog row
 Grid `36px | 1fr | auto`, gap 12px, padding 10px 14px, min-height 56px, soft-hairline dividers inside a 12px white list. Avatar 36px photo or initials on well. Name 600 ink, ID Courier Prime muted. Right slot: stamp (present) or "Not yet marked" (muted). `.fresh` = stamp-wash background, held until the 2s live fragment refresh. Empty state: muted 0.95rem line with a bold ink lead.
@@ -124,7 +124,7 @@ HTML table in a 12px bordered white wrapper with horizontal scroll. Rows 34px; d
 Bordered Streamlit container. Grid `72px | 1fr`, photo 72×88 8px radius; name, ID, meta list (key muted, value ink-2, 0.875rem); today line shows the stamp or muted text. Edit / delete buttons below; delete confirms with a primary button.
 
 ### Buttons, inputs, alerts
-Streamlit widgets themed by `config.toml` (8px radius, widget borders on). One primary button per view (Take attendance, Save, Add student, confirm delete); everything else secondary. Press feedback: `scale(0.97)` on `:active`, 140ms ease-out transform; background/border 140ms ease. Focus: 2px outline offset 2px. Toasts and alerts always carry a Material icon.
+Streamlit widgets themed by `config.toml` (8px radius, widget borders on). One primary button per view (Take attendance, Save, Add student, confirm delete); everything else secondary. Press feedback: `scale(0.97)` on `:active`, 140ms ease-out transform; background/border 140ms ease. Focus: 2px ink outline, offset 2px. Toasts and alerts always carry a Material icon.
 
 ### Live check-in
 Webcam box 2px + Hershey label: stamp ink "Name | Verifying..." then "Name | Stamped present" after 5 matches; red "Not recognised". Legend dots 8px (stamp ink / red). Feed beside camera = present catalog rows refreshed every 2s.
