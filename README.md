@@ -76,7 +76,15 @@ Windows:
 python -m pip install -r requirements.txt
 ```
 
-### 4. Start the app
+### 4. Load demo data (optional)
+
+```bash
+python seed_demo.py
+```
+
+Adds 18 demo students and three weeks of attendance so every page has something to show. It only runs on an empty database; `python seed_demo.py --reset` replaces existing data. Demo photos are initials, not faces, so register a real student to try the camera.
+
+### 5. Start the app
 
 ```bash
 python -m streamlit run app.py
@@ -96,6 +104,7 @@ Glance/
 │   └── config.toml      # Streamlit theme and server settings
 ├── app.py               # The Streamlit app
 ├── styles.css           # Custom styles loaded by the app
+├── seed_demo.py         # Optional demo students and attendance
 ├── requirements.txt
 ├── attendance.db        # Created on first run (gitignored)
 ├── student_photos/      # Registered photos (gitignored)
