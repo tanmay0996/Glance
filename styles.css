@@ -195,6 +195,10 @@ h1, h2, h3 { letter-spacing: -0.02em; text-wrap: balance; }
   .g-head { flex-direction: column; align-items: flex-start; gap: 4px; }
   .g-head h1 { font-size: 1.6rem; }
   .g-row { padding: 10px 12px; }
+  .g-row .g-name { white-space: normal; overflow-wrap: anywhere; }
+  .g-slip tbody th { min-width: 0; max-width: 128px; padding: 4px 10px; white-space: normal; line-height: 1.2; }
+  .g-slip tbody th .g-id { display: block; margin-left: 0; font-size: 0.72rem; }
+  .g-slip th, .g-slip td { height: 42px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

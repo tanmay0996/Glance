@@ -1068,9 +1068,11 @@ def student_card(student, today, time_today):
             f'</div></div>'
         )
 
-        edit_col, delete_col = st.columns(2)
+        # A horizontal container keeps both actions on one line on phones,
+        # where st.columns would stack them.
+        actions = st.container(horizontal=True, gap="small")
 
-        with edit_col:
+        with actions:
             with st.popover(
                 "Edit",
                 icon=":material/edit:",
@@ -1078,7 +1080,7 @@ def student_card(student, today, time_today):
             ):
                 edit_form(student)
 
-        with delete_col:
+        with actions:
             with st.popover(
                 "Delete",
                 icon=":material/delete:",
