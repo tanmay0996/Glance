@@ -20,3 +20,7 @@ student_photos/
 # IDE files
 .vscode/
 .idea/
+
+# Design tooling (local)
+.impeccable/
+.playwright-mcp/
