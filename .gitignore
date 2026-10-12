@@ -1,0 +1,22 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local database
+attendance.db
+
+# Student photos / personal data
+student_photos/
+
+# Environment variables / secrets
+.env
+
+# Streamlit cache
+.streamlit/secrets.toml
+
+# IDE files
+.vscode/
+.idea/

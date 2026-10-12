@@ -1,0 +1,10 @@
+streamlit==1.64.0
+pandas==3.0.6
+Pillow==12.3.0
+numpy==2.5.3
+av==17.1.0
+streamlit-webrtc==0.78.1
+opencv-python==4.11.0.86
+tensorflow==2.21.0
+tf-keras==2.21.0
+deepface==0.0.101
